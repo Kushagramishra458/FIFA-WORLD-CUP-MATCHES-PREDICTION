@@ -1,42 +1,111 @@
-# FIFA-WORLD-CUP-MATCHES-PREDICTION
-# 🏆 FIFA 2026 World Cup - AI Match Predictor
+<div align="center">
 
-An enterprise-grade machine learning pipeline designed to predict international football match outcomes, calculate Expected Goals (xG), and simulate the upcoming FIFA World Cup 2026 group stages. 
+# ⚽ FIFA 2026 World Cup — AI Match Predictor
 
-Unlike standard prediction scripts, this project utilizes a **chronological, zero-leakage feature engineering architecture**, a dynamic custom Elo rating system, and SHAP-based model explainability.
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-174A7C?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/)
+[![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white)](https://jupyter.org/)
+[![Dataset](https://img.shields.io/badge/Dataset-GitHub%20Open%20Data-blue?style=for-the-badge)](https://github.com/martj42/international_results)
+[![License](https://img.shields.io/badge/License-MIT-1abc9c?style=for-the-badge)](../LICENSE.md)
 
-## ✨ Key Features
+> Predicting the **outcomes of international football matches** and forecasting the 2026 World Cup group stages using XGBoost, dynamic Elo ratings, and chronological, zero-leakage feature engineering.
 
-* **Zero-Leakage Feature Engineering:** Simulates chronological match history, ensuring that predictions only use data (rolling form, goals scored/conceded, H2H stats) available *prior* to kickoff.
-* **Dynamic Elo Rating Engine:** Custom-built ranking system that adjusts team strength based on match importance (e.g., World Cup vs. Friendlies) and margin of victory.
-* **Parametric xG Model:** Blends historical attack/defense intensities with Elo differentials to project Expected Goals (xG) for every matchup.
-* **Algorithm Benchmarking:** Automated cross-validation testing across Logistic Regression, Random Forest, and XGBoost classifiers.
-* **SHAP Explainability:** Uses Game Theory (SHapley Additive exPlanations) to break down "black-box" predictions into plain-English driving factors.
-* **Interactive UI Dashboard:** A front-end interface built directly into Jupyter Notebooks (`ipywidgets`) allowing users to simulate matches on the fly.
+</div>
 
-## 🛠️ Tech Stack
+---
 
-* **Language:** Python 3.9+
-* **Machine Learning:** XGBoost, Scikit-Learn
-* **Data Processing:** Pandas, NumPy
-* **Explainability & Visualization:** SHAP, Matplotlib, Seaborn
-* **Environment:** Jupyter Notebooks, IPyWidgets
+## ⚠️ Sports Analytics Disclaimer
 
-## 📂 Project Structure
+> **This project is for educational and portfolio purposes only.** It demonstrates applied machine learning and feature engineering techniques and is not intended to be used as financial advice or for sports betting.
+
+---
+
+## 📌 Table of Contents
+
+- [About the Project](#-about-the-project)
+- [The Challenge of Football Prediction](#-the-challenge-of-football-prediction)
+- [Dataset](#-dataset)
+- [Class Distribution](#-class-distribution)
+- [Methodology](#-methodology)
+- [Model Performance](#-model-performance)
+- [Key Findings](#-key-findings)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [Tech Stack](#-tech-stack)
+- [References](#-references)
+
+---
+
+## 🔬 About the Project
+
+Predicting football matches is notoriously difficult due to the low-scoring nature of the sport and the high variance of individual games. This project applies **ensemble machine learning algorithms** to automatically forecast match outcomes (Home Win, Draw, Away Win) and calculate Expected Goals (xG).
+
+A key challenge in sports ML is **data leakage**—using future knowledge (like a team's end-of-year win rate) to predict a match in the middle of the year. This project tackles this by building a strict chronological pipeline that only calculates running form and head-to-head metrics based on the exact state of the world *prior* to kickoff.
+
+**What this project covers:**
+- Strict zero-leakage feature engineering on time-series sports data
+- Custom implementation of a dynamic Elo Rating system
+- Stratified cross-validation for highly imbalanced class distributions (Draws)
+- SHAP-based game theory for model explainability
+- Interactive UI dashboarding using IPyWidgets
+
+---
+
+## 🥅 The Challenge of Football Prediction
+
+Unlike basketball or tennis, football matches frequently end in a **Draw**, creating a complex multi-class classification problem. Furthermore, predicting a simple "Win/Loss" is often insufficient. This pipeline goes a step further by utilizing a parametric model to project **Expected Goals (xG)**, balancing historical attack and defense intensities scaled by Elo differentials to provide a mathematically sound projected scoreline.
+
+---
+
+## 📊 Dataset
+
+| Property | Details |
+|----------|---------|
+| **Source** | [International Football Results (1872–Present)](https://github.com/martj42/international_results) |
+| **Samples** | Filtered to Modern Era (2000–Present) |
+| **Features** | Elo Ratings, Rolling Form (GF/GA), H2H Win Rates, Tournament Weights |
+| **Classes** | 3 (Away Win, Draw, Home Win) |
+| **Challenge** | Preventing temporal data leakage while building rolling historical averages. |
+
+---
+
+## 📋 Class Distribution
+
+| Code | Outcome | Description |
+|:----:|-------|---------|
+| 0 | **Away Win** | Visiting team wins (lowest frequency) |
+| 1 | **Draw** | Match ends in a tie |
+| 2 | **Home Win** | Hosting team wins (highest frequency due to home advantage) |
+
+> **Note:** The "Home Win" class naturally dominates international football datasets due to home-field advantage. Models must be carefully validated using Macro F1-scores to ensure they don't simply predict the majority class.
+
+---
+
+## ⚙️ Methodology
+
+The project follows a chronologically strict ML pipeline:
 
 ```text
-fifa-ml-project/
-│
-├── data/                                 # Raw data directory
-│   └── international_results.csv         # Historical dataset (auto-downloaded)
-│
-├── models/                               # Serialized model artifacts
-│   └── fifa_xgboost.joblib               # Trained XGBoost engine
-│
-├── notebooks/                            # Core execution & UI layer
-│   ├── 04_Model_Training_and_Simulation.ipynb  # Pipeline backend
-│   └── 05_Final_Predictor.ipynb                # Interactive dashboard
-│
-├── visuals/                              # Generated plots (SHAP, feature importance)
-│
-└── README.md                             # Project documentation
+Raw Match Data (1872–Present)
+        │
+        ▼
+  Data Preprocessing & Filtering (2000+)
+  ├── Handle neutral venues
+  └── Clean missing scores
+        │
+        ▼
+  Zero-Leakage Feature Engineering
+  ├── Dynamic Elo Rating updates (scaled by margin of victory)
+  ├── Rolling 5-match form (goals scored/conceded, points)
+  └── Head-to-Head historical win rates
+        │
+        ▼
+  Model Training & Cross-Validation
+  ├── Logistic Regression
+  ├── Random Forest Classifier
+  └── XGBoost Classifier  ← Best Model
+        │
+        ▼
+  Simulation & Explainability
+  ├── SHAP Value extraction for global/local explainability
+  └── Interactive IPyWidgets UI Deployment
