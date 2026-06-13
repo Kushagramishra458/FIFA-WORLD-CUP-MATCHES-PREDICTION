@@ -2,6 +2,12 @@
 
 # ⚽ FIFA 2026 World Cup — AI Match Predictor
 
+
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Kushagramishra458/FIFA-WORLD-CUP-MATCHES-PREDICTION/main?labpath=FINAL PREDICTION.ipynb)
+
+## Project Overview
+This project utilizes an XGBoost machine learning model to predict the outcomes of the 2026 FIFA World Cup...
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![XGBoost](https://img.shields.io/badge/XGBoost-174A7C?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/)
 [![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white)](https://jupyter.org/)
