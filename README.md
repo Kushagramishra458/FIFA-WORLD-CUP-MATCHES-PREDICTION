@@ -4,8 +4,8 @@
 
 
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Kushagramishra458/FIFA-WORLD-CUP-MATCHES-PREDICTION/main?labpath=FINAL PREDICTION.ipynb)
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Kushagramishra458/FIFA-WORLD-CUP-MATCHES-PREDICTION/main?labpath=FINAL%20PREDICTION.ipynb)
 ## Project Overview
 This project utilizes an XGBoost machine learning model to predict the outcomes of the 2026 FIFA World Cup...
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
